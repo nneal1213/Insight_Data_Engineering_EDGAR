@@ -19,6 +19,7 @@ def open_files(input_filename, session_filename, inactivity_file):
         inactivity_period = int(f3.read().strip())
     return input_f, output_f, inactivity_period
 
+
 def feed_data(line):
     """
     Parses out the ip, date, time, cik, accession, extention from each line
@@ -29,11 +30,11 @@ def feed_data(line):
     timestamp = datetime.datetime.strptime(date + ' ' + time, '%Y-%m-%d %X').timestamp()
     return ip, timestamp, (cik, accession, extention)
 
+
 def write_to_file(output_f, key, value):
     """
     Writes user, first timestamp, last timestamp, duration, and counts to file
-    """
-   
+    """   
     user = key
     first_timestamp, last_timestamp, counts = value
     duration = str(int(last_timestamp - first_timestamp)+1)
@@ -43,25 +44,23 @@ def write_to_file(output_f, key, value):
     output_f.write(','.join([user, first_timestamp, last_timestamp, duration, counts]))
     output_f.write('\n')
 
+    
 def remove_inactive_sessions(active_session_dict, current_time):
     """
     Cleaning up inactive sessions
     """
-    if active_session_dict:
-        
-        keys_list = list(active_session_dict.keys())
-        
+    if active_session_dict:      
+        keys_list = list(active_session_dict.keys())        
         for key in keys_list:
-
             if abs(current_time - active_session_dict[key][1]) >= inactivity_period:
                 try:
                     write_to_file(output_f, key, active_session_dict[key])
                 except IOError:
                     print('Unable to write line to file')
                     raise
-
                 active_session_dict.pop(key)
     return active_session_dict
+
 
 def saving_all_active_sessions(active_session_dict):
     """
@@ -75,11 +74,9 @@ def saving_all_active_sessions(active_session_dict):
                     raise
 
 
-
 if __name__ == '__main__':
     
-    input_filename, inactivity_file, session_filename = sys.argv[1:]
-  
+    input_filename, inactivity_file, session_filename = sys.argv[1:]  
     begin = time.time()
     row_counter = 0
 
@@ -123,7 +120,6 @@ if __name__ == '__main__':
         if timestamp > current_time:
             active_session_dict = remove_inactive_sessions(active_session_dict, current_time)
             current_time = timestamp
-
 
     # Saving all to output file and closing file pointers
     saving_all_active_sessions(active_session_dict)
