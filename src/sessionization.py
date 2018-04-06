@@ -76,7 +76,11 @@ def saving_all_active_sessions(active_session_dict):
 
 if __name__ == '__main__':
     
-    input_filename, inactivity_file, session_filename = sys.argv[1:]  
+    try:
+        input_filename, inactivity_file, session_filename = sys.argv[1:]  
+    except:
+        print('file input must have (input file), (inactivity file), (output file)')
+    
     begin = time.time()
     row_counter = 0
 
