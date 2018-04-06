@@ -15,5 +15,6 @@ After the conclusion of each second, an examination was performed upon the activ
 
 When the input file reaches end-of-file (although this would not occur in the case of streaming data), all inactive sessions are written to the output file and the file pointers closed out. 
 
-
+# How to run
  
+Type ./run.sh or go within the src directory and type "python sessionization.py (input file) (inactivity file) (output file) 
